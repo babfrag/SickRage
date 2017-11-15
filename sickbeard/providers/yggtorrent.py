@@ -51,6 +51,7 @@ class YggTorrentProvider(TorrentProvider):  # pylint: disable=too-many-instance-
         self.urls = {
             'login': urljoin(self.url, 'user/login'),
             'search': urljoin(self.url, 'engine/search'),
+            'download': urljoin(self.url, 'engine/download_torrent?id=')
         }
 
         # Proper Strings
@@ -114,7 +115,7 @@ class YggTorrentProvider(TorrentProvider):  # pylint: disable=too-many-instance-
                                 continue
 
                             title = cells[0].find('a', class_='torrent-name').get_text(strip=True)
-                            download_url = urljoin(self.url, cells[0].find('a', target='_blank')['href'])
+                            download_url = urljoin(self.urls['download'], cells[0].find('a', target='_blank')['href'])
                             if not (title and download_url):
                                 continue
 
