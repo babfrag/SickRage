@@ -115,14 +115,17 @@ class YggTorrentProvider(TorrentProvider):  # pylint: disable=too-many-instance-
                                 continue
 
                             title = cells[0].find('a', class_='torrent-name').get_text(strip=True)
-                            download_url = urljoin(self.urls['download'], cells[0].find('a', target='_blank')['href'])
+                            downloads_url = cells[0].findAll('a', href=True)
+                            for d in downloads_url:
+                                if "download_torrent" in d['href']:
+                                    download_url=d['href']
                             if not (title and download_url):
                                 continue
 
                             seeders = try_int(cells[4].get_text(strip=True))
                             leechers = try_int(cells[5].get_text(strip=True))
 
-                            torrent_size = cells[2].get_text()
+                            torrent_size = cells[3].get_text()
                             size = convert_size(torrent_size) or -1
 
                             # Filter unseeded torrent
